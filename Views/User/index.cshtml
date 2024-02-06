@@ -1,0 +1,55 @@
+@model IEnumerable<CadastroDeUsuario.Models.User>
+
+@{
+    ViewData["Title"] = "Usuários";
+}
+
+<h2 class="p-3 ">@ViewData["Title"]</h2>
+
+
+
+<a asp-action="Create" class="btn btn-danger mb-3 ">Create User</a>
+
+
+<section class="w-100 m-auto">
+    <article>
+        <table class="table table-striped">
+            <thead class="">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>  
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </article>
+</section>
+
+

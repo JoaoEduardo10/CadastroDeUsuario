@@ -1,4 +1,5 @@
 using CadastroDeUsuario.DataBase;
+using CadastroDeUsuario.services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,9 @@ builder.Services.AddDbContext<UserRegistrationMvcContext>(
     options => options.UseNpgsql(builder.Configuration.GetConnectionString("Connection"), builder => builder.MigrationsAssembly("CadastroDeUsuario"))
 );
 
+builder.Services.AddScoped<SeedingServices>();
+builder.Services.AddScoped<UserServices>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -20,6 +24,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.Services.CreateScope().ServiceProvider.GetRequiredService<SeedingServices>().Seed();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -29,6 +35,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=User}/{action=Index}/{id?}");
 
 app.Run();
