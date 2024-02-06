@@ -1,7 +1,14 @@
+using CadastroDeUsuario.DataBase;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<UserRegistrationMvcContext>(
+    options => options.UseNpgsql(builder.Configuration.GetConnectionString("Connection"), builder => builder.MigrationsAssembly("CadastroDeUsuario"))
+);
 
 var app = builder.Build();
 
