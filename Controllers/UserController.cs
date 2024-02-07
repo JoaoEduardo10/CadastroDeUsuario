@@ -1,4 +1,5 @@
 using CadastroDeUsuario.Models;
+using CadastroDeUsuario.Models.ViewModel;
 using CadastroDeUsuario.services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,14 +16,32 @@ namespace CadastroDeUsuario.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<User> users = await _userServices.FindAll();
+            List<User> users = await _userServices.FindAllAsync();
             return View(users);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Create()
         {
-            return View("Error!");
+            var viewModel = new UserFormViewModel();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> Create(User user)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new UserFormViewModel { User = user };
+
+                return View(viewModel);
+            }
+
+            await _userServices.InsertAsync(user);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

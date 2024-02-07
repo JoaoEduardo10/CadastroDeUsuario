@@ -14,14 +14,14 @@ namespace CadastroDeUsuario.services
         }
 
 
-        public async Task<List<User>> FindAll()
+        public async Task<List<User>> FindAllAsync()
         {
             return await _context.User.ToListAsync();
         }
 
-        public async Task AddUser(User user)
+        public async Task InsertAsync(User obj)
         {
-            _context.Add(user);
+            _context.Add(obj);
 
             await _context.SaveChangesAsync();
         }
