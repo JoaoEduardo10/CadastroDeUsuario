@@ -19,12 +19,60 @@ namespace CadastroDeUsuario.services
             return await _context.User.ToListAsync();
         }
 
+        public async Task<User?> FindByEmailAsync(User obj)
+        {
+            try
+            {
+                var user = await _context.User.FirstOrDefaultAsync(user => user.Email == obj.Email);
+
+                return user;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
+
+        }
+
+
+        public async Task<User> FindByIdAsync(int id)
+        {
+            try
+            {
+                var user = await _context.User.FirstOrDefaultAsync(user => user.Id == id) ?? throw new Exception("Usuário não existe");
+
+
+                return user;
+            }
+            catch (Exception error)
+            {
+
+                throw new Exception(error.Message);
+            }
+        }
+
         public async Task InsertAsync(User obj)
         {
-            _context.Add(obj);
+            var user = await FindByEmailAsync(obj);
 
+            if (user != null)
+            {
+                throw new Exception("Usuário já existe");
+            }
+
+#pragma warning disable CS8634 
+            _context.Add(user);
+#pragma warning restore CS8634 
             await _context.SaveChangesAsync();
         }
 
+        public async Task RemoveAsync(int id)
+        {
+            var user = await FindByIdAsync(id);
+
+            _context.User.Remove(user);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
