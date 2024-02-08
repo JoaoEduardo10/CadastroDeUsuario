@@ -74,5 +74,23 @@ namespace CadastroDeUsuario.services
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateAsync(int id, User obj)
+        {
+            try
+            {
+                User user = await FindByIdAsync(id);
+
+                user.Name = obj.Name;
+                user.Email = obj.Email;
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception error)
+            {
+
+                throw new Exception(error.Message);
+            }
+        }
     }
 }

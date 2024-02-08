@@ -82,6 +82,43 @@ namespace CadastroDeUsuario.Controllers
         }
 
 
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                var user = await _userServices.FindByIdAsync(id);
+
+                var viewModel = new UserFormViewModel { User = user };
+                return View(viewModel.User);
+            }
+            catch (Exception error)
+            {
+                return RedirectToAction(nameof(Error), new { message = error.Message });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, User user)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    var viewModel = new UserFormViewModel { User = user };
+
+                    return View(viewModel);
+                }
+
+                await _userServices.UpdateAsync(id, user);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception error)
+            {
+                return RedirectToAction(nameof(Error), new { message = error.Message });
+            }
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(string message)

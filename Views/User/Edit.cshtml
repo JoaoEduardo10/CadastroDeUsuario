@@ -1,0 +1,37 @@
+@model User
+
+
+@{
+    ViewData["Title"] = "Editar";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h3>deseja editar o @Html.DisplayFor(model => model.Name) ?</h3>
+
+<section class="w-100 h-100">
+    <form asp-action="Edit" class="w-50 m-auto ">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="hidden">
+        <div class="form-row">
+            <div class="col form-group mb-2 ">
+                <label asp-for="Name" class="control-label pb-1 "></label>
+                <input asp-for="Name" class="form-control ">
+            </div>
+            <div class="col form-group mb-2">
+                <label asp-for="Email" class="control-label pb-1 "></label>
+                <input asp-for="Email" class="form-control ">
+            </div>
+
+            <div class="col form-group">
+                <input type="submit" value="Editar" class="btn btn-danger ">
+            </div>
+        </div>
+    </form>
+</section>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
